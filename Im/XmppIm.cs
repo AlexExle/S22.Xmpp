@@ -44,6 +44,30 @@ namespace S22.Xmpp.Im {
 				core.Hostname = value;
 			}
 		}
+        /// <summary>
+        /// The hostname of the XMPP server to connect to (use when different).
+        /// </summary>
+        string serverhostname;
+
+        /// <summary>
+        /// The hostname of the XMPP server to connect to(Use when different from hostname of JID).
+        /// </summary>
+        /// <exception cref="ArgumentNullException">The Hostname property is being
+        /// set and the value is null.</exception>
+        /// <exception cref="ArgumentException">The Hostname property is being set
+        /// and the value is the empty string.</exception>
+        public string ServerHostname
+        {
+            get
+            {
+                return serverhostname;
+            }
+            set
+            {
+                value.ThrowIfNullOrEmpty("ServerHostname");
+                serverhostname = value;
+            }
+        }
 
 		/// <summary>
 		/// The port number of the XMPP service of the server.
@@ -224,6 +248,32 @@ namespace S22.Xmpp.Im {
 				core = new XmppCore(hostname, username, password, port, tls, validate);
 				SetupEventHandlers();
 		}
+        /// <summary>
+        /// Initializes a new instance of the XmppIm.
+        /// </summary>
+        /// <param name="hostname">The hostname of the XMPP server to connect to.</param>
+        /// <param name="serverhostname">The hostname of the XMPP server to connect to(Use when different from XMPP Hostname).</param>
+        /// <param name="username">The username with which to authenticate. In XMPP jargon
+        /// this is known as the 'node' part of the JID.</param>
+        /// <param name="password">The password with which to authenticate.</param>
+        /// <param name="port">The port number of the XMPP service of the server.</param>
+        /// <param name="tls">If true the session will be TLS/SSL-encrypted if the server
+        /// supports TLS/SSL-encryption.</param>
+        /// <param name="validate">A delegate used for verifying the remote Secure Sockets
+        /// Layer (SSL) certificate which is used for authentication. Can be null if not
+        /// needed.</param>
+        /// <exception cref="ArgumentNullException">The hostname parameter or the
+        /// username parameter or the password parameter is null.</exception>
+        /// <exception cref="ArgumentException">The hostname parameter or the username
+        /// parameter is the empty string.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The value of the port parameter
+        /// is not a valid port number.</exception>
+        public XmppIm(string hostname, string serverhostname, string username, string password,
+            int port = 5222, bool tls = true, RemoteCertificateValidationCallback validate = null)
+        {
+            core = new XmppCore(hostname, serverhostname, username, password, port, tls, validate);
+            SetupEventHandlers();
+        }
 
 		/// <summary>
 		/// Initializes a new instance of the XmppIm.

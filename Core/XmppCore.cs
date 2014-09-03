@@ -108,6 +108,30 @@ namespace S22.Xmpp.Core {
 				hostname = value;
 			}
 		}
+        /// <summary>
+        /// The hostname of the XMPP server to connect to (use when different).
+        /// </summary>
+        string serverhostname;
+
+        /// <summary>
+        /// The hostname of the XMPP server to connect to(Use when different from hostname of JID).
+        /// </summary>
+        /// <exception cref="ArgumentNullException">The Hostname property is being
+        /// set and the value is null.</exception>
+        /// <exception cref="ArgumentException">The Hostname property is being set
+        /// and the value is the empty string.</exception>
+        public string ServerHostname
+        {
+            get
+            {
+                return serverhostname;
+            }
+            set
+            {
+                value.ThrowIfNullOrEmpty("ServerHostname");
+                serverhostname = value;
+            }
+        }
 
 		/// <summary>
 		/// The port number of the XMPP service of the server.
@@ -256,12 +280,43 @@ namespace S22.Xmpp.Core {
 		public XmppCore(string hostname, string username, string password,
 			int port = 5222, bool tls = true, RemoteCertificateValidationCallback validate = null) {
 				Hostname = hostname;
+                ServerHostname = hostname;
 				Username = username;
 				Password = password;
 				Port = port;
 				Tls = tls;
 				Validate = validate;
 		}
+        /// <summary>
+        /// Initializes a new instance of the XmppCore class.
+        /// </summary>
+        /// <param name="hostname">The hostname of the XMPP server to connect to.</param>
+        /// <param name="username">The username with which to authenticate. In XMPP jargon
+        /// this is known as the 'node' part of the JID.</param>
+        /// <param name="password">The password with which to authenticate.</param>
+        /// <param name="port">The port number of the XMPP service of the server.</param>
+        /// <param name="tls">If true the session will be TLS/SSL-encrypted if the server
+        /// supports TLS/SSL-encryption.</param>
+        /// <param name="validate">A delegate used for verifying the remote Secure Sockets
+        /// Layer (SSL) certificate which is used for authentication. Can be null if not
+        /// needed.</param>
+        /// <exception cref="ArgumentNullException">The hostname parameter or the
+        /// username parameter or the password parameter is null.</exception>
+        /// <exception cref="ArgumentException">The hostname parameter or the username
+        /// parameter is the empty string.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The value of the port parameter
+        /// is not a valid port number.</exception>
+        public XmppCore(string hostname, string serverhostname, string username, string password,
+            int port = 5222, bool tls = true, RemoteCertificateValidationCallback validate = null)
+        {
+            Hostname = hostname;
+            ServerHostname = serverhostname;
+            Username = username;
+            Password = password;
+            Port = port;
+            Tls = tls;
+            Validate = validate;
+        }
 
 		/// <summary>
 		/// Initializes a new instance of the XmppCore class.
@@ -282,6 +337,7 @@ namespace S22.Xmpp.Core {
 		public XmppCore(string hostname, int port = 5222, bool tls = true,
 			RemoteCertificateValidationCallback validate = null) {
 			Hostname = hostname;
+            ServerHostname = hostname;
 			Port = port;
 			Tls = tls;
 			Validate = validate;
@@ -310,7 +366,7 @@ namespace S22.Xmpp.Core {
 				throw new ObjectDisposedException(GetType().FullName);
 			this.resource = resource;
 			try {
-				client = new TcpClient(Hostname, Port);
+				client = new TcpClient(ServerHostname, Port);
 				stream = client.GetStream();
 				// Sets up the connection which includes TLS and possibly SASL negotiation.
 				SetupConnection(this.resource);
