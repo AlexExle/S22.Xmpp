@@ -288,9 +288,10 @@ namespace S22.Xmpp.Core {
 				Validate = validate;
 		}
         /// <summary>
-        /// Initializes a new instance of the XmppCore class.
+        /// Initializes a new instance of the XmppCore class.  Used when you need to override the server name sent to the server.
         /// </summary>
-        /// <param name="hostname">The hostname of the XMPP server to connect to.</param>
+        /// <param name="hostname">The 'virtual' hostname of the XMPP server to connect to.</param>
+        /// <param name="serverhostname">The actual hostname or IP of the XMPP server to connect to.</param>
         /// <param name="username">The username with which to authenticate. In XMPP jargon
         /// this is known as the 'node' part of the JID.</param>
         /// <param name="password">The password with which to authenticate.</param>
