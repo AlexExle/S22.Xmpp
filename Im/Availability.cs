@@ -27,6 +27,10 @@ namespace S22.Xmpp.Im {
 		/// <summary>
 		/// The user or resource is away for an extended period.
 		/// </summary>
-		ExtendedAway
+		ExtendedAway,
+        /// <summary>
+        /// The User or resource is in an unknown condition.
+        /// </summar>
+        Unknown
 	}
 }
