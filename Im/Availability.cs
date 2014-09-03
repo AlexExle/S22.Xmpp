@@ -30,7 +30,7 @@ namespace S22.Xmpp.Im {
 		ExtendedAway,
         /// <summary>
         /// The User or resource is in an unknown condition.
-        /// </summar>
+        /// </summary>
         Unknown
 	}
 }
